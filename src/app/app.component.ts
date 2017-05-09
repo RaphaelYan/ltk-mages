@@ -3,6 +3,8 @@ import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/databa
 import { AngularFireAuth } from 'angularfire2/auth';
 import { Observable } from 'rxjs/Rx';
 
+import * as firebase from 'firebase/app';
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -14,16 +16,16 @@ export class AppComponent {
   msgVal: string = '';
 
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase) {
-    this.items = af.list('/messages', {
+    this.items = af.list('/spells', {
       query: {
-        limitToLast: 50
+        limitToLast: 20
       }
     });
     this.user = this.afAuth.authState;
   }
 
-  login() {
-    this.afAuth.auth.signInAnonymously();
+  loginWithGithub() {
+    this.afAuth.auth.signInWithPopup(new firebase.auth.GithubAuthProvider());
   }
 
   logout() {
