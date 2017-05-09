@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { AngularFireDatabase, FirebaseListObservable } from 'angularfire2/database';
+import { AngularFireAuth } from 'angularfire2/auth';
+import { Observable } from 'rxjs/Rx';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +9,29 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'app works!';
+  user: Observable<firebase.User>;
+  items: FirebaseListObservable<any[]>;
+  msgVal: string = '';
+
+  constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase) {
+    this.items = af.list('/messages', {
+      query: {
+        limitToLast: 50
+      }
+    });
+    this.user = this.afAuth.authState;
+  }
+
+  login() {
+    this.afAuth.auth.signInAnonymously();
+  }
+
+  logout() {
+    this.afAuth.auth.signOut();
+  }
+
+  send(desc: string) {
+    this.items.push({ message: desc});
+    this.msgVal = '';
+  }
 }
