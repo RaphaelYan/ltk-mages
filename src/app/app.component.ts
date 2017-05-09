@@ -13,7 +13,7 @@ import * as firebase from 'firebase/app';
 export class AppComponent {
   user: Observable<firebase.User>;
   items: FirebaseListObservable<any[]>;
-  msgVal: string = '';
+  spell: any = {};
 
   constructor(public afAuth: AngularFireAuth, public af: AngularFireDatabase) {
     this.items = af.list('/spells', {
@@ -32,8 +32,8 @@ export class AppComponent {
     this.afAuth.auth.signOut();
   }
 
-  send(desc: string) {
-    this.items.push({ message: desc});
-    this.msgVal = '';
+  send() {
+    this.items.push(this.spell);
+    this.spell = {};
   }
 }

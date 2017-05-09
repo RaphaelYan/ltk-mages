@@ -1,9 +1,25 @@
 <div class="row columns">
-  <button (click)="loginWithGithub()" *ngIf="!(user | async)?.uid">Login with Github</button>
-  <button (click)="logout()" *ngIf="(user | async)?.uid">Logout</button>
+  <ng-template #na>
+    <button (click)="loginWithGithub()">Login with Github</button>
+  </ng-template>
+  <div *ngIf="(user | async)?.uid; else na">
+    <button (click)="logout()">Logout</button>
 
-  <input type="text" id="message" *ngIf="(user | async)?.uid" placeholder="What is it that you do?" (keyup.enter)="send($event.target.value)" [(ngModel)]="msgVal" />
+    <input type="text" placeholder="Arcana" [(ngModel)]="spell.arcana" />
+    <input type="text" placeholder="Dots" [(ngModel)]="spell.dots" />
+    <input type="text" placeholder="Name" [(ngModel)]="spell.name" />
+    <input type="text" placeholder="Practice" [(ngModel)]="spell.practice" />
+    <input type="text" placeholder="Action" [(ngModel)]="spell.action" />
+    <input type="text" placeholder="Contested" [(ngModel)]="spell.contested" />
+    <input type="text" placeholder="Duration" [(ngModel)]="spell.duration" />
+    <input type="text" placeholder="Aspect" [(ngModel)]="spell.aspect" />
+    <input type="text" placeholder="Rote order" [(ngModel)]="spell.rote_order" />
+    <input type="text" placeholder="Rote pool" [(ngModel)]="spell.rote_pool" />
+
+    <button (click)="send()">Add</button>
+  </div>
+
   <div id="details-container">
-    <p *ngFor="let item of items | async">{{item.message}}</p>
+    <p *ngFor="let item of items | async">{{item.name}}</p>
   </div>
 </div>
